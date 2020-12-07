@@ -1,6 +1,7 @@
 <script lang="typescript">
 	import './main.css';
 	import { onMount } from "svelte";
+	import Timestamp from "./timestamp.svelte"
 	let count: number = 0;
 	onMount(() => {
 		const interval = setInterval(() => count++, 1000);
@@ -35,7 +36,7 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		font-size: calc(10px + 2vmin);
+		font-size: calc(5px + 2vmin);
 	}
 	.App-link {
 		color: #ff3e00;
@@ -58,19 +59,8 @@
 
 <div class="App">
 	<header class="App-header">
-		<div class="px-5 bg-purple-300 box">
-			<img src="/logo.svg" class="App-logo" alt="logo" />
-			<p>Edit <code>src/App.svelte</code> and save to reload.</p>
-			<p>Page has been open for <code>{count}</code> seconds.</p>
-			<p>
-				<a
-					class="App-link"
-					href="https://svelte.dev"
-					target="_blank"
-					rel="noopener noreferrer">
-					Learn Svelte
-				</a>
-			</p>
+		<div class="px-5 bg-blue-300">
+			<Timestamp/>
 		</div>
 	</header>
 </div>
