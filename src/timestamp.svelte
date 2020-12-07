@@ -1,24 +1,36 @@
 <script>
 import { format, parse, toDate, getUnixTime } from 'date-fns'
-let dateFormat = "yyyyMMdd HH:mm:ss"
+let dateFormat = "yyyy-MM-dd"
+let timeFormat = "HH:mm:ss"
 
 // Input "date"
 $: dateText = format(Date.now(), dateFormat)
-$: resultFromInputDate = parse(dateText, dateFormat, new Date())
-$: timestampFromInputDate = getUnixTime(resultFromInputDate)
-
-// Input "timestamp"
-$: timestamp = getUnixTime(Date.now())
+$: dateTime = format(Date.now(), timeFormat)
+$: timestamp = Math.floor(Date.now()/1000)
+$: resultFromInputDate = parse(dateText + dateTime, dateFormat + timeFormat, new Date())
 $: resultFromTimestamp = toDate(timestamp * 1000)
 
+function onDateChange() {
+  resultFromInputDate = parse(dateText + dateTime, dateFormat + timeFormat, new Date())
+  timestamp = getUnixTime(resultFromInputDate)
+}
+
+function onTimestampChange() {
+  resultFromTimestamp = toDate(timestamp * 1000)
+  dateText = format(resultFromTimestamp, dateFormat)
+  dateTime = format(resultFromTimestamp, timeFormat)
+}
 </script>
-<h2>Date to timestamp</h2>
-<div>Date: {resultFromInputDate}</div>
-<div>Date: <input type="text" name="date" bind:value={dateText} /></div>
-<div>Timestamp: {timestampFromInputDate}</div>
 
-<hr/>
-Timestamp to date
-
-<div>Timestamp: <input type="text" name="timestamp" bind:value={timestamp} /></div>
-<div>Date: {resultFromTimestamp}</div>
+<div>
+  <h2>Date &lt;=&gt; timestamp</h2>
+  <div> 
+    <input type="date" id="dateToConvert" name="dateToConvert" bind:value={dateText} on:input={onDateChange}>
+    <input type="time" id="timeToConvert" name="timeToConvert" step="2" bind:value={dateTime} on:input={onDateChange}>
+  </div>
+  <br/>
+  <div>
+    <input type="number" name="timestamp" bind:value={timestamp} on:input={onTimestampChange}  />
+  </div>
+  <br/>
+</div>
